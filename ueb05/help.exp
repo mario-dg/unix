@@ -1,0 +1,11 @@
+Makefile to scale and convert jpg, tga and ppm files to png.
+
+VARIABLES
+  SIZE  - specifies the largest image size (default=100)
+
+TARGETS
+  all   - default target, does the same as tar target
+  tar   - create tar archive
+  png   - scale and convert all jpg and tga files to png
+  help  - display this help and exit
+  clean - remove all generated files

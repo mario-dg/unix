@@ -1,0 +1,34 @@
+define make   {make --no-print-directory --file=DUT}
+define silent {>/dev/null 2>/dev/null}
+
+test {
+    name    = 1) make help
+    comment = Ausgabe der Hilfe
+    type    = param
+    cmd       {${make} help | diff - help.exp}
+    expect    {^$}
+}
+
+test {
+    name    = 2) make fh-wedel.ppm
+    comment = Konvertiert die Datei fh-wedel.jpg in fh-wedel.ppm
+    type    = param
+    cmd       {rm -f fh-wedel.ppm; \
+               ${make} fh-wedel.ppm ${silent}; \
+               ls fh-wedel.ppm; \
+               rm -f fh-wedel.ppm; }
+    expect    {^fh-wedel.ppm$}
+}
+
+test {
+    name    = 3) make png
+    comment = Konvertiert alle jpg- und tga-Dateien in png-Dateien
+    type    = param
+    cmd       {rm -f fh-wedel.ppm fh-wedel.scaled fh-wedel.png \
+                     lena.ppm lena.scaled lena.png; \
+               ${make} png ${silent}; \
+               ls fh-wedel.ppm fh-wedel.scaled fh-wedel.png lena.ppm lena.scaled lena.png; \
+               rm -f fh-wedel.ppm fh-wedel.scaled fh-wedel.png \
+                     lena.ppm lena.scaled lena.png; }
+    expect    {^fh-wedel.png\nfh-wedel.ppm\nfh-wedel.scaled\nlena.png\nlena.ppm\nlena.scaled$}
+}

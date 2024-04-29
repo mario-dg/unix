@@ -1,0 +1,240 @@
+
+test {
+    name    = 1a Hilfeaufruf: Ausgabe
+    comment = Hilfetext anfordern und ueberpruefen
+    type    = param
+    cmd       {DUT --help | diff - help.exp}
+    expect    {^$}
+}
+
+test {
+    name    = 1b Hilfeaufruf: Ausgabe
+    comment = Hilfetext anfordern, 2. Parameter angeben und ueberpruefen
+    type    = param
+    cmd       {DUT -h -i 2>/dev/null ; echo "$?"}
+    expect    {^1$}
+}
+
+test {
+    name    = 1c Hilfeaufruf: Ausgabe
+    comment = Hilfetext anfordern, Zahl angeben und ueberpruefen
+    type    = param
+    cmd       {DUT -h -i 2>/dev/null ; echo "$?"}
+    expect    {^1$}
+}
+
+test {
+    name    = 2 Korrekter Aufruf mit Addition und Visualisierung
+    comment = Erwartet zunächst die Visualisierung und dann das Ergebnis auf stdout
+    type    = param
+    cmd       {DUT -i 1 -2 ADD | diff - EinsPlusMinusZwei}
+    expect    {^$}
+}
+
+test {
+    name    = 3a Korrekter Aufruf mit einfacher Subtraktion mit negativer Zahl und Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 1 -2 SUB | head -1 }
+    expect    {^\(1\-\(\-2\)\)$}
+}
+
+test {
+    name    = 3b Korrekter Aufruf mit einfacher Subtraktion mit negativer Zahl und Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 1 -2 SUB | tail -1 }
+    expect    {^3$}
+}
+
+test {
+    name    = 4a Korrekter Aufruf mit einfacher Multiplikation mit negativer Zahl und Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 1 -2 MUL | head -1 }
+    expect    {^\(1\*\(\-2\)\)$}
+}
+
+test {
+    name    = 4b Korrekter Aufruf mit einfacher Multiplikation mit negativer Zahl und Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 1 -2 MUL | tail -1 }
+    expect    {^\-2$}
+}
+
+test {
+    name    = 5a Korrekter Aufruf mit einfacher ganzzahliger Divisin mit negativer Zahl und Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 1 -2 DIV | head -1 }
+    expect    {^\(1\/\(\-2\)\)$}
+}
+
+test {
+    name    = 5b Korrekter Aufruf mit einfacher ganzzahliger Division mit negativer Zahl und Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 1 -2 DIV | tail -1 }
+    expect    {^0$}
+}
+
+test {
+    name    = 6a Korrekter Aufruf mit einfacher ganzzahliger Restbestimmung mit negativer Zahl und Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 1 -2 MOD | head -1 }
+    expect    {^\(1\%\(\-2\)\)$}
+}
+
+test {
+    name    = 6b Korrekter Aufruf mit einfacher ganzzahliger Restbestimmung mit negativer Zahl und Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 1 -2 MOD | tail -1 }
+    expect    {^1$}
+}
+
+test {
+    name    = 7a Modulo 0
+    comment = Teilen durch 0
+    type    = param
+    cmd       {DUT 1 0 MOD 2>/dev/null ; echo "$?"}
+    expect    {^4$}
+}
+
+test {
+    name    = 7b DIVISION 0
+    comment = Teilen durch 0
+    type    = param
+    cmd       {DUT 1 0 DIV 2>/dev/null ; echo "$?"}
+    expect    {^4$}
+}
+
+test {
+    name    = 8a Falsche Anzahl an Parameter mit Visualisierung
+    comment = 2 Parameter
+    type    = param
+    cmd       {DUT -i 1 2 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 8b Falsche Anzahl an Parameter mit Visualisierung
+    comment = 4 Parameter
+    type    = param
+    cmd       {DUT -i 1 2 ADD 3 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 9a Keine Parameter angegeben
+    comment = 0 Parameter, keine Visualisierung
+    type    = param
+    cmd       {DUT 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 9b Keine Parameter angegeben
+    comment = 0 Parameter, mit Visualisierung
+    type    = param
+    cmd       {DUT -i 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 10a Falsche Anzahl an Parameter ohne Visualisierung
+    comment = 2 Parameter
+    type    = param
+    cmd       {DUT 1 2 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 10b Falsche Anzahl an Parameter ohne Visualisierung
+    comment = 4 Parameter
+    type    = param
+    cmd       {DUT 1 2 ADD 3 2>/dev/null ; echo "$?"}
+    expect    {^2$}
+}
+
+test {
+    name    = 11a1 Unbekannte Operatoren mit Visualisierung
+    comment = 1. Operator falsch
+    type    = param
+    cmd       {DUT -i 1 2 BACKFISCH 2>/dev/null ; echo "$?"}
+    expect    {^5$}
+}
+
+test {
+    name    = 11b1 Unbekannte Operatoren mit Visualisierung
+    comment = 2. Operator falsch
+    type    = param
+    cmd       {DUT -i 1 2 ADD 2 BACKFISCH 2>/dev/null ; echo "$?"}
+    expect    {^5$}
+}
+
+test {
+    name    = 11a2 Unbekannte Operatoren ohne Visualisierung
+    comment = 1. Operator falsch
+    type    = param
+    cmd       {DUT 1 2 BACKFISCH 2>/dev/null ; echo "$?"}
+    expect    {^5$}
+}
+
+test {
+    name    = 11b2 Unbekannte Operatoren ohne Visualisierung
+    comment = 2. Operator falsch
+    type    = param
+    cmd       {DUT 1 2 ADD 2 BACKFISCH 2>/dev/null ; echo "$?"}
+    expect    {^5$}
+}
+
+test {
+    name    = 12a Laengere Rechnung mit Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 5 3 SUB -7 ADD 2 MOD 6 MUL -4 DIV | head -1 }
+    expect    {^\(\(\(\(\(5\-3\)\+\(\-7\)\)\%2\)\*6\)\/\(\-4\)\)$}
+}
+
+test {
+    name    = 12b Laengere Rechnung mit Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 5 3 SUB -7 ADD 2 MOD 6 MUL -4 DIV | tail -1 }
+    expect    {^1$}
+}
+
+test {
+    name    = 13 Multiplikation mit 0
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 23 0 MUL | head -1 }
+    expect    {^\(23\*0\)$}
+}
+
+test {
+    name    = 13b Laengere Rechnung mit Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 23 0 MUL | tail -1 }
+    expect    {^0$}
+}
+
+test {
+    name    = 14a 0 Modulo
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 0 4 MOD | head -1 }
+    expect    {^\(0\%4\)$}
+}
+
+test {
+    name    = 14b 0 Modulo
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 0 4 MOD | tail -1 }
+    expect    {^0$}
+}

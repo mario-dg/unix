@@ -1,0 +1,43 @@
+Sonderfaelle die auftreten können und wie sie behandelt werden.
+
+
+
+Sonderzeichen am Anfang : Werden ignoriert und sortiert wird nach dem ersten
+alphanumerischen Zeichen.
+
+
+Umlaute : Werden erkannt und einsortiert.
+
+
+Keine Textdatei mit '.txt' vorhanden : Keine Fehlermeldung. mytextfiles.txt
+wird in info erstellt und ist leer.
+
+
+Nur eine Textdatei vorhanden : Wird ganz normal in die mytextfiles.txt
+geschrieben. Keine Fehlermeldung.
+
+
+Dateien mit Leerzeichen voran : Werden ganz normal als Sonderzeichen behandelt
+und sortiert.
+
+
+Versteckte Dateien : Werden ignoriert und nicht mit in die mytextfiles.txt
+geschrieben.
+
+
+Datei, die schon mytextfiles.txt heißt (im Ordner info) : Wird überschrieben,
+alte Daten gehen verloren.
+
+
+Dateien, die nicht '.txt' als Endung haben : Werden ignoriert und nicht in die
+mytextfiles.txt geschrieben
+
+
+Dateien, bei denen nach '.txt' noch weitere Zeichen kommen : Werden ebenfalls
+ignoriert.
+
+
+Skript funktioniert nicht, wenn bereits eine Datei, die 'info' heißt,
+existiert. mkdir kann dann keinen Ordner erstellen und ls | grep kann nicht
+die mytextfiles.txt Datei erstellen, da man auf eine Datei nicht so zugreifen
+kann, wie auf einen Ordner (./info/mytextfiles.txt).

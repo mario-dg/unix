@@ -1,0 +1,16 @@
+
+test {
+    name    = Beispieltest Teil 1 (stdout)
+    comment = Testet die Standardausgabe
+    type    = param
+    cmd     {cat eingabe.in | DUT ausgabe.out}
+    expect  {^bad$}
+}
+
+test {
+    name    = Beispieltest Teil 2 (Datei)
+    comment = Testet die geschriebene Datei aus Basistest Teil 1
+    type    = param
+    cmd     {diff ausgabe.out erwartet.exp}
+    expect  {^$}
+}

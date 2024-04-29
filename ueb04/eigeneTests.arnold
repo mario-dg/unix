@@ -1,0 +1,47 @@
+test {
+    name    = 1. Structure-Ausgabe
+    comment = Erwartet eine korrekte Ausgabe der Struktur
+    type    = param
+    cmd       {DUT structureTest1.in -s | diff - sT1.out}
+    expect    {^$}
+}
+
+test {
+    name    = 2 Datei existiert nicht
+    comment = Hilfetext anfordern, Zahl angeben und ueberpruefen
+    type    = param
+    cmd       {DUT notexisting -u 2>/dev/null ; echo "$?"}
+    expect    {^4$}
+}
+
+test {
+    name    = 2b Datei nicht lesbar
+    comment = Hilfetext anfordern, Zahl angeben und ueberpruefen
+    type    = param
+    cmd       {DUT notreadable.txt -u 2>/dev/null ; echo "$?"}
+    expect    {^4$}
+}
+
+test {
+    name    = 2c Falscher Parameter
+    comment = Hilfetext anfordern, Zahl angeben und ueberpruefen
+    type    = param
+    cmd       {DUT 11.tex -k 2>/dev/null ; echo "$?"}
+    expect    {^5$}
+}
+
+test {
+    name    = 2d Zuviele Paramter bei der Hilfe
+    comment = Hilfetext anfordern, Zahl angeben und ueberpruefen
+    type    = param
+    cmd       {DUT -h -u 2>/dev/null ; echo "$?"}
+    expect    {^1$}
+}
+
+test {
+    name    = 3 Usepackage-Ausgabe
+    comment = Erwartet eine korrekte Ausgabe der verwendeten Pakete
+    type    = param
+    cmd       {DUT Latex_Mini_Dummy.tex -u}
+    expect    {^fontenc:T1\ngraphicx:$}
+}

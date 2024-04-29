@@ -1,0 +1,49 @@
+
+test {
+    name    = 1. Hilfeaufruf: Ausgabe
+    comment = Hilfetext anfordern und ueberpruefen
+    type    = param
+    cmd       {DUT -h | diff - help.exp}
+    expect    {^$}
+}
+
+test {
+    name    = 2a. Hilfeaufruf: Exit code
+    comment = Erwartet einen exit code von 0 bei korrektem Hilfeaufruf
+    type    = param
+    cmd       {DUT -h 1>/dev/null && echo "ok"}
+    expect    {^ok$}
+}
+
+test {
+    name    = 2b. Hilfeaufruf: Exit code (zweite Variante zur Ueberpruefung)
+    comment = Erwartet einen exit code von 0 bei korrektem Hilfeaufruf
+    type    = param
+    cmd       {DUT -h 1>/dev/null ; echo "$?"}
+    expect    {^0$}
+}
+
+test {
+    name    = 3a. Korrekter Aufruf mit einfacher Addition und Visualisierung
+    comment = Erwartet zunächst die Visualisierung und dann das Ergebnis auf stdout
+    type    = param
+    cmd       {DUT -i 1 2 ADD | diff - EinsPlusZwei}
+    expect    {^$}
+}
+
+test {
+    name    = 3b1. Korrekter Aufruf mit einfacher Addition und Visualisierung
+    comment = Erwartet als erstes die Visualisierung auf stdout und prueft nur diese
+    type    = param
+    cmd       {DUT -i 1 2 ADD | head -1 }
+    expect    {^\(1\+2\)$}
+}
+
+test {
+    name    = 3b2. Korrekter Aufruf mit einfacher Addition und Visualisierung
+    comment = Erwartet das Ergebnis als letztes auf stdout und prueft nur dieses
+    type    = param
+    cmd       {DUT -i 1 2 ADD | tail -1 }
+    expect    {^3$}
+}
+
